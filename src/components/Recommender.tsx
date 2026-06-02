@@ -60,21 +60,67 @@ export function Recommender({ setActiveView }: { setActiveView: (v: View) => voi
   const submitToAI = async () => {
     setIsLoading(true);
     setError('');
+    
+    // Simulate AI thinking time
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
     try {
-      const res = await fetch('/api/advisor', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(answers),
-      });
+      let strategy = "";
+      let reason = "";
+      let steps: string[] = [];
 
-      if (!res.ok) {
-        throw new Error('فشل الاتصال بالمستشار الذكي، يرجى المحاولة مرة أخرى.');
+      const challenge = answers['mainChallenge'] || '';
+      const style = answers['learningStyle'] || '';
+      const interaction = answers['interactionLevel'] || '';
+      const time = answers['timeAvailable'] || '';
+
+      if (time.includes('قصير') && interaction.includes('مرتفع')) {
+         strategy = "العصف الذهني (Brainstorming)";
+         reason = "بما أن الوقت المتاح قصير جداً والطلاب يتميزون بتفاعل عالٍ ومبادر، فإن تقنية العصف الذهني هي الأنسب لتوليد أكبر قدر من الأفكار في وقت ضيق دون قيود.";
+         steps = [
+           "طرح المشكلة أو السؤال على الطلاب بشكل واضح.",
+           "تشجيع جميع الطلاب على تقديم أفكارهم دون نقد أو تقييم أولي.",
+           "تسجيل كل الأفكار المطروحة على السبورة أو الشاشة الحائطية.",
+           "مناقشة الأفكار وبلورتها للوصول للنتيجة المطلوبة."
+         ];
+      }
+      else if (interaction.includes('ضعيف/خجول') || style.includes('تواصل اجتماعي')) {
+        strategy = "استراتيجية المهام المجزأة (Jigsaw)";
+        reason = "نظراً لأن مستوى تفاعل الطلاب ضعيف ولتشجيع التعلم الجماعي، فإن الجيغسو تدفع كل طالب ليكون عنصراً فعالاً وحيوياً (كخبير) مما يعزز الثقة والاعتماد المتبادل.";
+        steps = [
+          "تقسيم الطلاب إلى مجموعات أساسية من 4-6 أفراد.",
+          "توزيع أجزاء مختلفة من الدرس على أفراد كل مجموعة.",
+          "تكوين مجموعات الخبراء من الطلاب لدارسة نفس الجزء.",
+          "عودة الخبراء إلى مجموعاتهم لشرح الجزء لزملائهم."
+        ];
+      } else if (challenge.includes('صعوبة وتجريد') || style.includes('حركي')) {
+        strategy = "التعليم المتمايز (Differentiated Instruction)";
+        reason = "لمواجهة تحدي تجريد المفاهيم واختلاف أنماط التعلم، يوفر التعليم المتمايز قنوات ومسارات مختلفة يختار منها الطالب ما يناسب مستوى استعداده ونمطه.";
+        steps = [
+          "إجراء تقييم قبلي أو تحديد أنماط تعلم الطلاب واهتماماتهم.",
+          "تجهيز بدائل متعددة للمحتوى (بصري، سمعي، حركي).",
+          "تصميم أنشطة متدرجة الصعوبة تناسب الفروق الفردية.",
+          "توفير خيارات متنوعة لمخرج التعلم (طريقة التقييم)."
+        ];
+      } else {
+        strategy = "التعلم القائم على حل المشكلات";
+        reason = "تلبي هذه الاستراتيجية أهداف الشرح وتحديات الدرس من خلال إعطاء دور حيوي للطالب في البحث والتقصي وربط المفاهيم بواقع عملي.";
+        steps = [
+          "عرض مشكلة واقعية مرتبطة بموضوع الدرس.",
+          "تقسيم الطلاب لمجموعات للبحث والتقصي وطرح الأفكار.",
+          "استكشاف الموارد والبيانات للوصول لأسباب المشكلة.",
+          "اقتراح ومناقشة الحلول مع باقي المجموعات والمعلم."
+        ];
       }
 
-      const data = await res.json();
-      setResult(data);
+      setResult({
+        "اسم الاستراتيجية": strategy,
+        "لماذا هذه الاستراتيجية؟": reason,
+        "خطوات التنفيذ": steps
+      });
+      
     } catch (err: any) {
-      setError(err.message || 'حدث خطأ غير متوقع.');
+      setError('حدث خطأ أثناء المعالجة، يرجى المحاولة مرة أخرى.');
     } finally {
       setIsLoading(false);
     }
