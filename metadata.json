@@ -1,0 +1,6 @@
+{
+  "name": "استراتيجيات التدريس",
+  "description": "منصة تعليمية عصرية لاستراتيجيات التدريس المتمايز، المهام المجزأة والتدريس المصغر.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
