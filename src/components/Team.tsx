@@ -4,12 +4,6 @@ import { Users, Award, Star } from 'lucide-react';
 export function Team() {
   const teamMembers = [
     "عبدالرحمن علي خالد",
-    "خالد مصطفي انور",
-    "منار ابو بكر صادق",
-    "منار كامل محمد",
-    "اروي حسن سامي",
-    "بسملة رضا عبدالجواد",
-    "ندي هاني"
   ];
 
   return (
@@ -62,7 +56,7 @@ export function Team() {
                  <Users className="w-7 h-7" />
                </div>
                <h3 className="text-2xl md:text-3xl font-bold font-tajawal text-slate-800 dark:text-white">
-                 إعداد طلاب الدبلوم الخاص
+                 إعداد عبدالرحمن علي خالد  
                </h3>
             </div>
 
