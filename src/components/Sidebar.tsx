@@ -45,7 +45,7 @@ export function Sidebar({ activeView, setActiveView, isOpen }: SidebarProps) {
         ))}
       </nav>
       <div className="p-4 border-t border-slate-200 dark:border-slate-700 font-cairo text-center text-xs text-slate-500">
-        إعداد: طلاب الدبلوم الخاص
+        إعداد: عبدالرحمن علي خالد 
       </div>
     </aside>
   );
